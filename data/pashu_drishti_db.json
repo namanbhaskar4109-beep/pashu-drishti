@@ -1,0 +1,181 @@
+{
+  "users": [
+    {
+      "id": "user-vet-001",
+      "name": "Dr. Aarav Sharma",
+      "email": "dr.sharma@pashudrishti.ai",
+      "passwordHash": "f1b23e5b4833de8f801f0f9b07672afe:c31678f987ecb0bf77c822e83b3c455e507fb627ccb0d6affee89d8df5d4ea80e6f108ab6331bb5bf6313f69005ef9c219d195d8ac9142b28e1c05d87c6e6787",
+      "role": "vet",
+      "createdAt": "2026-01-15T09:00:00.000Z",
+      "updatedAt": "2026-01-15T09:00:00.000Z"
+    },
+    {
+      "id": "user-farmer-002",
+      "name": "Rajesh Patel",
+      "email": "rajesh.patel@dairyherds.in",
+      "passwordHash": "1121a8fbf29dd36bf1b1a8788473e557:e8ed09a6730c763565aa210922a5c2352914203d18c4b80fac774098bd0ebe0339beabf7eda2f7ed33ccfd65ba4e1f39ecd1bcfa4b2dc106868ca8dbfed8fd07",
+      "role": "farmer",
+      "createdAt": "2026-02-10T11:30:00.000Z",
+      "updatedAt": "2026-02-10T11:30:00.000Z"
+    },
+    {
+      "name": "Naman",
+      "email": "namanbhaskar4109@gmail.com",
+      "passwordHash": "8de0326fff46e895ff4d9a4358627a88:5c70c317e0bbb90df012ff20cd264657e74746ae0ee1b13bf8ea03c201419b84a7fe6a0285f3c684c0f5222d8f8a5095163e44cb23c8a78daf7a9e2949fcf862",
+      "role": "farmer",
+      "id": "user-ec435949-c552-4762-a672-f14da0d657c4",
+      "createdAt": "2026-10-05T09:00:55.188Z",
+      "updatedAt": "2026-10-05T09:00:55.188Z"
+    }
+  ],
+  "analyses": [
+    {
+      "userId": "user-ec435949-c552-4762-a672-f14da0d657c4",
+      "animalType": "Pet / Canine",
+      "imageUrl": "https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=800&auto=format&fit=crop&q=80",
+      "predictedDisease": "Lumpy Skin Disease (LSD)",
+      "pathogen": "Capripoxvirus (Poxviridae)",
+      "confidence": 96.8,
+      "severity": "high",
+      "symptoms": [
+        "Cutaneous nodules",
+        "Epidermal necrosis",
+        "Enlarged prescapular lymph nodes"
+      ],
+      "possibleCauses": [
+        "Vector transmission",
+        "Epidermal infection"
+      ],
+      "recommendedCare": [
+        "Symptomatic care: antipyretics and non-steroidal anti-inflammatories",
+        "Broad-spectrum antibiotics to prevent secondary bacterial infections",
+        "Topical antiseptics and wound dressings on ruptured nodules",
+        "Notify local veterinary animal husbandry authorities for statutory record"
+      ],
+      "quarantineProtocol": "Mandatory immediate isolation of infected individual. Implement strict vector control (mosquitoes/biting flies). Restrict movement within 5km radius.",
+      "urgency": "HIGH — Veterinary visit required within 12-24 hours",
+      "summary": "Pronounced circumscribed cutaneous nodules (2-5cm) observed across the neck, flank, and perineum. Accompanied by localized edema.",
+      "id": "analysis-8e28dfb8-5a38-4332-8c50-759d3cb5d1f9",
+      "createdAt": "2026-10-05T09:03:17.758Z"
+    },
+    {
+      "userId": "user-ec435949-c552-4762-a672-f14da0d657c4",
+      "animalType": "Pet / Canine",
+      "imageUrl": "https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=800&auto=format&fit=crop&q=80",
+      "predictedDisease": "Lumpy Skin Disease (LSD)",
+      "pathogen": "Capripoxvirus (Poxviridae)",
+      "confidence": 96.8,
+      "severity": "high",
+      "symptoms": [
+        "Cutaneous nodules",
+        "Epidermal necrosis",
+        "Enlarged prescapular lymph nodes"
+      ],
+      "possibleCauses": [
+        "Vector transmission",
+        "Epidermal infection"
+      ],
+      "recommendedCare": [
+        "Symptomatic care: antipyretics and non-steroidal anti-inflammatories",
+        "Broad-spectrum antibiotics to prevent secondary bacterial infections",
+        "Topical antiseptics and wound dressings on ruptured nodules",
+        "Notify local veterinary animal husbandry authorities for statutory record"
+      ],
+      "quarantineProtocol": "Mandatory immediate isolation of infected individual. Implement strict vector control (mosquitoes/biting flies). Restrict movement within 5km radius.",
+      "urgency": "HIGH — Veterinary visit required within 12-24 hours",
+      "summary": "Pronounced circumscribed cutaneous nodules (2-5cm) observed across the neck, flank, and perineum. Accompanied by localized edema.",
+      "id": "analysis-c244c3bf-71ba-4993-9318-74cd4f393dbc",
+      "createdAt": "2026-10-05T09:03:17.753Z"
+    },
+    {
+      "id": "analysis-001",
+      "userId": "user-vet-001",
+      "animalType": "Cattle",
+      "imageUrl": "https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=800&auto=format&fit=crop&q=80",
+      "predictedDisease": "Lumpy Skin Disease (LSD)",
+      "pathogen": "Capripoxvirus (Poxviridae)",
+      "confidence": 96.8,
+      "severity": "high",
+      "symptoms": [
+        "Skin nodules/lumps",
+        "Fever",
+        "Enlarged lymph nodes"
+      ],
+      "possibleCauses": [
+        "Vector transmission (biting insects)",
+        "Direct herd contact"
+      ],
+      "recommendedCare": [
+        "Isolate animal in quarantine pen",
+        "Antipyretics and anti-inflammatory therapy",
+        "Topical wound antiseptics on ruptured nodules"
+      ],
+      "quarantineProtocol": "Mandatory 21-day perimeter isolation. Vector control barriers required.",
+      "urgency": "HIGH — Immediate veterinary intervention",
+      "summary": "Circumscribed cutaneous nodules (2-5cm) observed across neck and flank region.",
+      "createdAt": "2026-09-28T14:22:00.000Z"
+    },
+    {
+      "id": "analysis-002",
+      "userId": "user-vet-001",
+      "animalType": "Cattle",
+      "imageUrl": "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?w=800&auto=format&fit=crop&q=80",
+      "predictedDisease": "Normal / Healthy Specimen",
+      "pathogen": "None detected",
+      "confidence": 97.4,
+      "severity": "healthy",
+      "symptoms": [
+        "Clean coat",
+        "Normal rumination",
+        "Alert posture"
+      ],
+      "possibleCauses": [
+        "N/A — Specimen within optimal clinical vital thresholds"
+      ],
+      "recommendedCare": [
+        "Maintain regular nutritional rations and mineral licks",
+        "Seasonal prophylactic deworming"
+      ],
+      "quarantineProtocol": "None required. Standard biosecurity maintained.",
+      "urgency": "ROUTINE — Regular checkup",
+      "summary": "Glossy pelage, clean muzzle, alert ear position, no lesions or inflammation.",
+      "createdAt": "2026-10-02T10:15:00.000Z"
+    },
+    {
+      "id": "analysis-003",
+      "userId": "user-farmer-002",
+      "animalType": "Cattle",
+      "imageUrl": "https://images.unsplash.com/photo-1527153857715-3908f2ae5e81?w=800&auto=format&fit=crop&q=80",
+      "predictedDisease": "Acute Clinical Mastitis",
+      "pathogen": "Staphylococcus aureus",
+      "confidence": 93.6,
+      "severity": "high",
+      "symptoms": [
+        "Udder swelling",
+        "Heat in quarters",
+        "Abnormal milk flakes"
+      ],
+      "possibleCauses": [
+        "Bacterial contamination of teat canals",
+        "Milking hygiene failure"
+      ],
+      "recommendedCare": [
+        "Intramammary antibiotic infusion",
+        "Systemic anti-inflammatory therapy",
+        "Frequent stripping of affected quarter"
+      ],
+      "quarantineProtocol": "Milk affected animal last. Thorough cluster sterilization.",
+      "urgency": "HIGH — Same-day clinical treatment",
+      "summary": "Asymmetric right hind quarter swelling with palpable localized heat.",
+      "createdAt": "2026-10-04T08:45:00.000Z"
+    }
+  ],
+  "sessions": [
+    {
+      "token": "7c8eea0ad266df519497b76b7fc73ac45ebc6d4a12d9876842f874f68288954c",
+      "userId": "user-ec435949-c552-4762-a672-f14da0d657c4",
+      "createdAt": "2026-10-05T09:01:49.000Z",
+      "expiresAt": "2026-11-04T09:01:49.000Z"
+    }
+  ]
+}
