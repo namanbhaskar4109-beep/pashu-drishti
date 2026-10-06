@@ -88,7 +88,7 @@ export const HomePage: React.FC = () => {
           <span className="section-label">PASHU DRISHTI // CLINICAL COVERAGE</span>
           <h2 className="section-title-editorial">See the Signs. Detect Early. Care Better.</h2>
           <p className="section-sub-editorial">
-            Trained on over 250,000 verified veterinary pathological images to identify dermatological, oral, and systemic anomalies before outbreaks spread.
+            Advanced multi-modal Vision AI analysis to identify dermatological, oral, and systemic visual anomalies before outbreaks spread.
           </p>
         </div>
 
@@ -188,9 +188,9 @@ export const HomePage: React.FC = () => {
       <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', padding: '0 3.5rem' }}>
         <div className="metrics-banner">
           <div className="metric-item">
-            <span className="metric-number">250K+</span>
-            <span className="metric-label">Clinical Datasets</span>
-            <span className="metric-sub">Benchmarked against board-certified veterinary pathology panels</span>
+            <span className="metric-number">Vision AI</span>
+            <span className="metric-label">Neural Image Analysis</span>
+            <span className="metric-sub">Real-time visual pathology screening with multi-species support</span>
           </div>
 
           <div className="metric-item">

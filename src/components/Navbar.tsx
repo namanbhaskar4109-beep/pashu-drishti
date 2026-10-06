@@ -47,19 +47,12 @@ export const Navbar: React.FC = () => {
             Disease Encyclopedia
           </Link>
 
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <Link
               to="/dashboard"
               className={`nav-link-item ${location.pathname === '/dashboard' ? 'active' : ''}`}
             >
               Dashboard
-            </Link>
-          ) : (
-            <Link
-              to="/login"
-              className={`nav-link-item ${location.pathname === '/login' ? 'active' : ''}`}
-            >
-
             </Link>
           )}
         </nav>

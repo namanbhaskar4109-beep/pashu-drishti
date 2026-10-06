@@ -300,8 +300,8 @@ export const DashboardPage: React.FC = () => {
                     {/* Confidence bar */}
                     <div className="confidence-meter-box">
                       <div className="meter-label-row">
-                        <span>CONFIDENCE</span>
-                        <strong>{record.confidence.toFixed(1)}%</strong>
+                        <span>AI ASSESSMENT</span>
+                        <strong>{record.confidenceLevel ? `${record.confidenceLevel} (${record.confidence.toFixed(0)}%)` : `${record.confidence.toFixed(1)}%`}</strong>
                       </div>
                       <div className="meter-track">
                         <div 
@@ -409,9 +409,9 @@ export const DashboardPage: React.FC = () => {
                   </div>
 
                   <div className="metric-cell">
-                    <span className="cell-label">PREDICTION CONFIDENCE</span>
+                    <span className="cell-label">AI ASSESSMENT</span>
                     <strong className="cell-val text-emerald-400">
-                      {selectedAnalysis.confidence.toFixed(1)}% Benchmark
+                      {selectedAnalysis.confidenceLevel ? `${selectedAnalysis.confidenceLevel} (${selectedAnalysis.confidence.toFixed(0)}%)` : `${selectedAnalysis.confidence.toFixed(1)}% AI Evaluation`}
                     </strong>
                   </div>
 
@@ -425,26 +425,26 @@ export const DashboardPage: React.FC = () => {
                   <div className="metric-cell">
                     <span className="cell-label">CLINICAL URGENCY</span>
                     <span style={{ fontSize: '0.88rem', color: '#fff', fontWeight: 600 }}>
-                      {selectedAnalysis.urgency || 'Routine'}
+                      {selectedAnalysis.urgency || selectedAnalysis.veterinarianRecommendation || 'Routine'}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Summary */}
-              {selectedAnalysis.summary && (
+              {/* Summary / Explanation */}
+              {(selectedAnalysis.summary || selectedAnalysis.explanation) && (
                 <div className="modal-section-block">
                   <h4 className="block-title">PATHOLOGICAL ASSESSMENT SUMMARY</h4>
-                  <p className="block-text">{selectedAnalysis.summary}</p>
+                  <p className="block-text">{selectedAnalysis.explanation || selectedAnalysis.summary}</p>
                 </div>
               )}
 
               {/* Symptoms */}
-              {selectedAnalysis.symptoms && selectedAnalysis.symptoms.length > 0 && (
+              {((selectedAnalysis.visibleSymptoms && selectedAnalysis.visibleSymptoms.length > 0) || (selectedAnalysis.symptoms && selectedAnalysis.symptoms.length > 0)) && (
                 <div className="modal-section-block">
                   <h4 className="block-title">DETECTED DERMATOLOGICAL & SYSTEMIC SYMPTOMS</h4>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                    {selectedAnalysis.symptoms.map((s, i) => (
+                    {(selectedAnalysis.visibleSymptoms || selectedAnalysis.symptoms).map((s, i) => (
                       <span key={i} className="species-tag" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#34D399' }}>
                         ✓ {s}
                       </span>
@@ -453,11 +453,25 @@ export const DashboardPage: React.FC = () => {
                 </div>
               )}
 
-              {/* Quarantine Protocol */}
-              {selectedAnalysis.quarantineProtocol && (
+              {/* Differential Possibilities */}
+              {((selectedAnalysis.alternativePossibilities && selectedAnalysis.alternativePossibilities.length > 0) || (selectedAnalysis.possibleCauses && selectedAnalysis.possibleCauses.length > 0)) && (
+                <div className="modal-section-block">
+                  <h4 className="block-title">DIFFERENTIAL DIAGNOSES / ALTERNATIVES</h4>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    {(selectedAnalysis.alternativePossibilities || selectedAnalysis.possibleCauses).map((alt, i) => (
+                      <span key={i} className="species-tag" style={{ background: 'rgba(56, 189, 248, 0.1)', color: '#38BDF8' }}>
+                        • {alt}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Quarantine Protocol / Next Steps */}
+              {(selectedAnalysis.quarantineProtocol || selectedAnalysis.recommendedNextSteps) && (
                 <div className="modal-section-block" style={{ borderLeft: '4px solid #EF4444', paddingLeft: '16px' }}>
                   <h4 className="block-title" style={{ color: '#F87171' }}>QUARANTINE & BIOSECURITY DIRECTIVE</h4>
-                  <p className="block-text">{selectedAnalysis.quarantineProtocol}</p>
+                  <p className="block-text">{selectedAnalysis.recommendedNextSteps || selectedAnalysis.quarantineProtocol}</p>
                 </div>
               )}
 

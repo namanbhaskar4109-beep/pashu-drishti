@@ -1,0 +1,32 @@
+{
+  "Lumpy Skin Disease (LSD)": {
+    "severity": "high",
+    "pathogen": "Capripoxvirus (Poxviridae)",
+    "recommendedNextSteps": "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, supportive care, and strict vector control.",
+    "veterinarianRecommendation": "HIGH PRIORITY — Mandatory statutory notification to district veterinary authorities."
+  },
+  "Bovine Mastitis": {
+    "severity": "high",
+    "pathogen": "Staphylococcus aureus / Streptococcus",
+    "recommendedNextSteps": "Isolate milk from bulk tank immediately. Perform California Mastitis Test (CMT) and follow veterinary intramammary infusion protocol.",
+    "veterinarianRecommendation": "URGENT — Clinical veterinary intervention recommended within 24 hours."
+  },
+  "Foot and Mouth Disease (FMD)": {
+    "severity": "critical",
+    "pathogen": "Aphthovirus (Picornaviridae)",
+    "recommendedNextSteps": "Emergency herd isolation. Restrict movement of animals, vehicles, and personnel within a 10km surveillance zone.",
+    "veterinarianRecommendation": "EMERGENCY — Immediate regulatory notification and containment required."
+  },
+  "Peste des Petits Ruminants (PPR)": {
+    "severity": "critical",
+    "pathogen": "Small Ruminant Morbillivirus",
+    "recommendedNextSteps": "Strict flock isolation, barrier biosecurity, and symptomatic fluid and antibiotic therapy for secondary infections.",
+    "veterinarianRecommendation": "EMERGENCY — Immediate veterinary authority reporting required."
+  },
+  "Normal / Healthy Bovine Specimen": {
+    "severity": "healthy",
+    "pathogen": "None detected",
+    "recommendedNextSteps": "Maintain standard herd nutrition, clean hydration, and scheduled preventive vaccinations.",
+    "veterinarianRecommendation": "ROUTINE — Continue scheduled bi-annual herd wellness evaluations."
+  }
+}

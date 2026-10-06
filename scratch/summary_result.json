@@ -1,0 +1,218 @@
+{
+  "total_files": 380,
+  "jpg_tilde_count": 38,
+  "valid_tilde_count": 34,
+  "invalid_tilde_count": 4,
+  "invalid_tilde": [
+    {
+      "name": "Diseased tongue 21.jpg~",
+      "size": 663298,
+      "error": "cannot identify image file 'd:\\\\animal\\\\backend\\\\dataset\\\\foot_and_mouth_disease\\\\Diseased tongue 21.jpg~'"
+    },
+    {
+      "name": "Diseased tongue 4.jpg~",
+      "size": 6255104,
+      "error": "broken data stream when reading image file"
+    },
+    {
+      "name": "Diseased tongue 8.jpg~",
+      "size": 3059764,
+      "error": "broken data stream when reading image file"
+    },
+    {
+      "name": "Diseased udder 3.jpg~",
+      "size": 3030172,
+      "error": "broken data stream when reading image file"
+    }
+  ],
+  "standard_files_count": 342,
+  "valid_standard_count": 341,
+  "corrupt_standard_count": 1,
+  "corrupt_standard": [
+    {
+      "name": "Non-diseased udder 4.jpeg",
+      "size": 1699593,
+      "error": "broken data stream when reading image file"
+    }
+  ],
+  "all_corrupted_count": 5,
+  "all_corrupted": [
+    {
+      "name": "Diseased tongue 21.jpg~",
+      "size": 663298,
+      "error": "cannot identify image file 'd:\\\\animal\\\\backend\\\\dataset\\\\foot_and_mouth_disease\\\\Diseased tongue 21.jpg~'"
+    },
+    {
+      "name": "Diseased tongue 4.jpg~",
+      "size": 6255104,
+      "error": "broken data stream when reading image file"
+    },
+    {
+      "name": "Diseased tongue 8.jpg~",
+      "size": 3059764,
+      "error": "broken data stream when reading image file"
+    },
+    {
+      "name": "Diseased udder 3.jpg~",
+      "size": 3030172,
+      "error": "broken data stream when reading image file"
+    },
+    {
+      "name": "Non-diseased udder 4.jpeg",
+      "size": 1699593,
+      "error": "broken data stream when reading image file"
+    }
+  ],
+  "duplicate_groups_count": 5,
+  "duplicates": {
+    "5c875dfec70c3fc265840c00741275eb0d8fe49f839c254c4e080bb745818590": [
+      "Diseased lower lip mucosa 8.jpg",
+      "lower lip mucosa 8.jpg"
+    ],
+    "b35f68efd3b0a7d7179f0c350c559228f3fea90fa4b7b9ff4e67e19ed30200c2": [
+      "Non diseased muzzle 17 with tongue.jpg",
+      "Non-diseased muzzle 17 with tongue.jpg"
+    ],
+    "af885fa2678838776f1f2ae4493a9ac4f1cfc91a78ecc45975d69970123f8f03": [
+      "Non-diseased hoof 2 copy.jpg",
+      "Non-diseased hoof 2.jpg"
+    ],
+    "466ab441c384287908b90e51e60d2ed15de1b5fe843aa54b0ebb5b9e76d9362f": [
+      "Non-diseased hoof 3 copy.jpg",
+      "Non-diseased hoof 3.jpg"
+    ],
+    "333931f6f4fe1d44d413c1bd8b4c2dfa7f8cbe76adfa00783e40a9e4f78013eb": [
+      "Non-diseased hoof 4.jpg",
+      "Non-diseased hoof 5.jpg"
+    ]
+  },
+  "non_diseased_count": 126,
+  "non_diseased_files": [
+    "Non diseased muzzle 17 with tongue.jpg",
+    "Non- diseased muzzle 1.jpeg",
+    "Non- diseased muzzle 3.jpeg",
+    "Non- diseased muzzle and face 1.jpeg",
+    "Non-diseased hoof 1.jpg",
+    "Non-diseased hoof 2 copy.jpg",
+    "Non-diseased hoof 2.jpg",
+    "Non-diseased hoof 3 copy.jpg",
+    "Non-diseased hoof 3.jpg",
+    "Non-diseased hoof 4.jpg",
+    "Non-diseased hoof 5.jpg",
+    "Non-diseased muzzle 10 with tongue.jpg",
+    "Non-diseased muzzle 10.jpg",
+    "Non-diseased muzzle 11 with tongue.jpg",
+    "Non-diseased muzzle 11.jpg",
+    "non-diseased muzzle 12 with tongue.jpg",
+    "Non-diseased muzzle 12.jpg",
+    "Non-diseased muzzle 13 with tongue.jpg",
+    "Non-diseased muzzle 13.jpg",
+    "Non-diseased muzzle 14 with tongue.jpg",
+    "Non-diseased muzzle 14.jpg",
+    "Non-diseased muzzle 15 with tongue.jpg",
+    "Non-diseased muzzle 16 with tongue.jpg",
+    "Non-diseased muzzle 16.jpg",
+    "Non-diseased muzzle 17 with tongue.jpg",
+    "Non-diseased muzzle 18 with tongue.jpg",
+    "Non-diseased muzzle 18.jpg",
+    "Non-diseased muzzle 19 with tongue.jpg",
+    "Non-diseased muzzle 2.jpeg",
+    "Non-diseased muzzle 20 with tongue.jpg",
+    "Non-diseased muzzle 20.jpg",
+    "Non-diseased muzzle 21 with tongue.jpg",
+    "Non-diseased muzzle 21.jpg",
+    "Non-diseased muzzle 24 with tongue.jpg",
+    "Non-diseased muzzle 24.jpg",
+    "Non-diseased muzzle 25 with tongue.jpg",
+    "Non-diseased muzzle 27 with tongue.jpg",
+    "Non-diseased muzzle 27.jpg",
+    "Non-diseased muzzle 28 with tongue.jpg",
+    "Non-diseased muzzle 28.jpg",
+    "Non-diseased muzzle 29 with tongue.jpg",
+    "Non-diseased muzzle 29.jpg",
+    "Non-diseased muzzle 30 with tongue.jpg",
+    "Non-diseased muzzle 30.jpg",
+    "Non-diseased muzzle 31 with tongue.jpg",
+    "Non-diseased muzzle 32 with tongue.jpg",
+    "Non-diseased muzzle 33 with tongue.jpg",
+    "Non-diseased muzzle 34 with tongue.jpg",
+    "Non-diseased muzzle 36 with tongue.jpg",
+    "Non-diseased muzzle 38 with tongue.jpg",
+    "Non-diseased muzzle 4.jpeg",
+    "Non-diseased muzzle 40 with tongue.jpg",
+    "Non-diseased muzzle 41 with tongue.jpg",
+    "Non-diseased muzzle 42 with tongue.jpg",
+    "Non-diseased muzzle 43 with tongue.jpg",
+    "Non-diseased muzzle 44 with tongue.jpg",
+    "Non-diseased muzzle 46 with tongue.jpg",
+    "Non-diseased muzzle 5 with tongue.jpg",
+    "Non-diseased muzzle 6 with tongue.jpg",
+    "Non-diseased muzzle 6.jpg",
+    "Non-diseased muzzle 7 with tongue.jpg",
+    "Non-diseased muzzle 7.jpg",
+    "Non-diseased muzzle 8 with tongue.jpg",
+    "Non-diseased muzzle 8.jpg",
+    "Non-diseased muzzle 9 with tongue.jpg",
+    "Non-diseased muzzle 9.jpg",
+    "Non-diseased teat and calf head.jpeg",
+    "Non-diseased udder 1.jpeg",
+    "Non-diseased udder 11.jpg",
+    "Non-diseased udder 13.jpg",
+    "Non-diseased udder 14.jpg",
+    "Non-diseased udder 17.jpg",
+    "Non-diseased udder 18.jpg",
+    "Non-diseased udder 19.jpg",
+    "Non-diseased udder 2.jpeg",
+    "Non-diseased udder 20.jpg",
+    "Non-diseased udder 21.jpg",
+    "Non-diseased udder 22.jpg",
+    "Non-diseased udder 23.jpg",
+    "Non-diseased udder 24.jpg",
+    "Non-diseased udder 25.jpg",
+    "Non-diseased udder 26.jpg",
+    "Non-diseased udder 27.jpg",
+    "Non-diseased udder 28.jpg",
+    "Non-diseased udder 29.jpg",
+    "Non-diseased udder 3.jpg",
+    "Non-diseased udder 30.jpg",
+    "Non-diseased udder 31.jpg",
+    "Non-diseased udder 32.jpg",
+    "Non-diseased udder 33.jpg",
+    "Non-diseased udder 34.jpg",
+    "Non-diseased udder 35.jpg",
+    "Non-diseased udder 36.jpg",
+    "Non-diseased udder 37.jpg",
+    "Non-diseased udder 38.jpg",
+    "Non-diseased udder 39.jpg",
+    "Non-diseased udder 4.jpeg",
+    "Non-diseased udder 40.jpg",
+    "Non-diseased udder 41.jpg",
+    "Non-diseased udder 42.jpg",
+    "Non-diseased udder 43.jpg",
+    "Non-diseased udder 44.jpg",
+    "Non-diseased udder 45.jpg",
+    "Non-diseased udder 46.jpg",
+    "Non-diseased udder 47.jpg",
+    "Non-diseased udder 48.jpg",
+    "Non-diseased udder 49.jpg",
+    "Non-diseased udder 5.jpeg",
+    "Non-diseased udder 50.jpg",
+    "Non-diseased udder 51.jpg",
+    "Non-diseased udder 52.jpg",
+    "Non-diseased udder 53.jpg",
+    "Non-diseased udder 54.jpg",
+    "Non-diseased udder 55.jpg",
+    "Non-diseased udder 56.jpg",
+    "Non-diseased udder 57.jpg",
+    "Non-diseased udder 58.jpg",
+    "Non-diseased udder 59.jpg",
+    "Non-diseased udder 6.jpeg",
+    "Non-diseased udder 60.jpg",
+    "Non-diseased udder 61.jpg",
+    "Non-diseased udder 62.jpg",
+    "Non-diseased udder 63.jpg",
+    "Non-diseased udder 7.jpg",
+    "Non-diseased udder 8.jpg",
+    "Non-diseased udder 9.jpg"
+  ]
+}

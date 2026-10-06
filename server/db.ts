@@ -19,15 +19,22 @@ export interface AnimalAnalysis {
   animalType: string;
   imageUrl: string;
   predictedDisease: string;
+  possibleDisease?: string;
   pathogen?: string;
   confidence: number;
+  confidenceLevel?: 'High' | 'Moderate' | 'Low' | string;
   severity: 'healthy' | 'moderate' | 'high' | 'critical';
   symptoms: string[];
+  visibleSymptoms?: string[];
   possibleCauses: string[];
+  alternativePossibilities?: string[];
   recommendedCare: string[];
+  recommendedNextSteps?: string;
   quarantineProtocol: string;
   urgency: string;
+  veterinarianRecommendation?: string;
   summary: string;
+  explanation?: string;
   createdAt: string;
 }
 
@@ -88,19 +95,26 @@ const DEFAULT_SEED_ANALYSES: AnimalAnalysis[] = [
     animalType: 'Cattle',
     imageUrl: 'https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=800&auto=format&fit=crop&q=80',
     predictedDisease: 'Lumpy Skin Disease (LSD)',
+    possibleDisease: 'Lumpy Skin Disease (LSD)',
     pathogen: 'Capripoxvirus (Poxviridae)',
-    confidence: 96.8,
+    confidence: 88.0,
+    confidenceLevel: 'High',
     severity: 'high',
     symptoms: ['Skin nodules/lumps', 'Fever', 'Enlarged lymph nodes'],
+    visibleSymptoms: ['Skin nodules/lumps', 'Fever', 'Enlarged lymph nodes'],
     possibleCauses: ['Vector transmission (biting insects)', 'Direct herd contact'],
+    alternativePossibilities: ['Pseudo-lumpy skin disease', 'Bovine papular stomatitis'],
     recommendedCare: [
       'Isolate animal in quarantine pen',
       'Antipyretics and anti-inflammatory therapy',
       'Topical wound antiseptics on ruptured nodules'
     ],
+    recommendedNextSteps: 'Mandatory perimeter isolation. Vector control barriers required.',
     quarantineProtocol: 'Mandatory 21-day perimeter isolation. Vector control barriers required.',
     urgency: 'HIGH — Immediate veterinary intervention',
+    veterinarianRecommendation: 'Immediate veterinary intervention within 12-24 hours.',
     summary: 'Circumscribed cutaneous nodules (2-5cm) observed across neck and flank region.',
+    explanation: 'Circumscribed cutaneous nodules (2-5cm) observed across neck and flank region.',
     createdAt: '2026-09-28T14:22:00.000Z'
   },
   {
@@ -109,18 +123,25 @@ const DEFAULT_SEED_ANALYSES: AnimalAnalysis[] = [
     animalType: 'Cattle',
     imageUrl: 'https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?w=800&auto=format&fit=crop&q=80',
     predictedDisease: 'Normal / Healthy Specimen',
+    possibleDisease: 'Normal / Healthy Specimen',
     pathogen: 'None detected',
-    confidence: 97.4,
+    confidence: 92.0,
+    confidenceLevel: 'High',
     severity: 'healthy',
     symptoms: ['Clean coat', 'Normal rumination', 'Alert posture'],
+    visibleSymptoms: ['Clean coat', 'Normal rumination', 'Alert posture'],
     possibleCauses: ['N/A — Specimen within optimal clinical vital thresholds'],
+    alternativePossibilities: [],
     recommendedCare: [
       'Maintain regular nutritional rations and mineral licks',
       'Seasonal prophylactic deworming'
     ],
+    recommendedNextSteps: 'None required. Standard biosecurity maintained.',
     quarantineProtocol: 'None required. Standard biosecurity maintained.',
     urgency: 'ROUTINE — Regular checkup',
+    veterinarianRecommendation: 'Routine preventive veterinary monitoring.',
     summary: 'Glossy pelage, clean muzzle, alert ear position, no lesions or inflammation.',
+    explanation: 'Glossy pelage, clean muzzle, alert ear position, no lesions or inflammation.',
     createdAt: '2026-10-02T10:15:00.000Z'
   },
   {
@@ -129,19 +150,26 @@ const DEFAULT_SEED_ANALYSES: AnimalAnalysis[] = [
     animalType: 'Cattle',
     imageUrl: 'https://images.unsplash.com/photo-1527153857715-3908f2ae5e81?w=800&auto=format&fit=crop&q=80',
     predictedDisease: 'Acute Clinical Mastitis',
+    possibleDisease: 'Acute Clinical Mastitis',
     pathogen: 'Staphylococcus aureus',
-    confidence: 93.6,
+    confidence: 85.0,
+    confidenceLevel: 'High',
     severity: 'high',
     symptoms: ['Udder swelling', 'Heat in quarters', 'Abnormal milk flakes'],
+    visibleSymptoms: ['Udder swelling', 'Heat in quarters', 'Abnormal milk flakes'],
     possibleCauses: ['Bacterial contamination of teat canals', 'Milking hygiene failure'],
+    alternativePossibilities: ['Subclinical mastitis', 'Udder edema'],
     recommendedCare: [
       'Intramammary antibiotic infusion',
       'Systemic anti-inflammatory therapy',
       'Frequent stripping of affected quarter'
     ],
+    recommendedNextSteps: 'Milk affected animal last. Thorough cluster sterilization.',
     quarantineProtocol: 'Milk affected animal last. Thorough cluster sterilization.',
     urgency: 'HIGH — Same-day clinical treatment',
+    veterinarianRecommendation: 'Same-day veterinary clinical examination required.',
     summary: 'Asymmetric right hind quarter swelling with palpable localized heat.',
+    explanation: 'Asymmetric right hind quarter swelling with palpable localized heat.',
     createdAt: '2026-10-04T08:45:00.000Z'
   }
 ];

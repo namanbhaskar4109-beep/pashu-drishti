@@ -14,16 +14,54 @@ export interface AnimalAnalysis {
   animalType: string;
   imageUrl: string;
   predictedDisease: string;
+  possibleDisease?: string;
   pathogen?: string;
   confidence: number;
+  confidenceLevel?: 'High' | 'Moderate' | 'Low' | string;
   severity: 'healthy' | 'moderate' | 'high' | 'critical';
   symptoms: string[];
+  visibleSymptoms?: string[];
   possibleCauses: string[];
+  alternativePossibilities?: string[];
   recommendedCare: string[];
+  recommendedNextSteps?: string;
   quarantineProtocol: string;
   urgency: string;
+  veterinarianRecommendation?: string;
   summary: string;
+  explanation?: string;
   createdAt: string;
+}
+
+export interface PredictionResult {
+  animalType: string;
+  possibleDisease: string;
+  alternativePossibilities: string[];
+  visibleSymptoms: string[];
+  severity: 'healthy' | 'moderate' | 'high' | 'critical';
+  confidenceLevel: 'High' | 'Moderate' | 'Low' | string;
+  confidence: number;
+  explanation: string;
+  recommendedNextSteps: string;
+  veterinarianRecommendation: string;
+  imageUrl: string;
+  engineUsed?: string;
+}
+
+export interface ModelStatus {
+  installed: boolean;
+  trained: boolean;
+  architecture: string;
+  modelName: string;
+  activeEngine: string;
+  modelPath: string;
+  weightsFound?: boolean;
+  classesFound?: boolean;
+  classes: string[];
+  numClasses: number;
+  torchAvailable?: boolean;
+  device: string;
+  message: string;
 }
 
 const TOKEN_KEY = 'pashu_drishti_auth_token';
@@ -113,5 +151,21 @@ export const api = {
         method: 'POST',
         body: JSON.stringify({ image: base64Image, name: fileName }),
       }),
+  },
+
+  predict: {
+    run: (payload: { image: string; animalType: string; symptoms?: string[] }) =>
+      request<{ success: boolean; result: PredictionResult; analysis: AnimalAnalysis }>('/api/predict', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }),
+  },
+
+  model: {
+    getStatus: () => request<ModelStatus>('/api/model/status'),
+  },
+
+  ai: {
+    getStatus: () => request<ModelStatus>('/api/model/status'),
   },
 };

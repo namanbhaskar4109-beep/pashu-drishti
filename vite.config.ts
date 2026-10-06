@@ -10,6 +10,23 @@ function pashuDrishtiApiPlugin(): Plugin {
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         if (req.url?.startsWith('/api/')) {
+          // Check if FastAPI backend (http://127.0.0.1:8000) is running
+          let fastApiRunning = false;
+          try {
+            const check = await fetch('http://127.0.0.1:8000/api/health', {
+              signal: AbortSignal.timeout(300)
+            });
+            fastApiRunning = check.ok;
+          } catch {
+            fastApiRunning = false;
+          }
+
+          if (fastApiRunning) {
+            // FastAPI backend is active on port 8000, delegate to Vite proxy
+            return next();
+          }
+
+          // Fallback to local middleware when FastAPI is not active
           try {
             const handled = await handleApiRequest(req, res);
             if (handled) return;
@@ -41,7 +58,16 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    open: false
+    open: false,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true
+      },
+      '/uploads': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true
+      }
+    }
   }
 });
-

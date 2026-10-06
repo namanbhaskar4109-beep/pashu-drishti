@@ -1,5 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { db, hashPassword, verifyPassword, type User } from './db.js';
+import { validateImageQuality, analyzeAnimalImage, getModelStatus, type AiPredictionOutput } from './ai.js';
 
 // Strip sensitive data before sending user to client
 export function sanitizeUser(user: User): Omit<User, 'passwordHash'> {
@@ -193,6 +194,142 @@ export async function handleApiRequest(req: IncomingMessage, res: ServerResponse
       return true;
     }
 
+    /* ---------------------------------------------------- REAL AI PREDICTION */
+
+    // POST /api/predict
+    if (pathname === '/api/predict' && method === 'POST') {
+      const user = getAuthenticatedUser(req);
+      if (!user) {
+        sendJson(res, 401, { error: 'Authentication required to run animal disease detection.' });
+        return true;
+      }
+
+      const body = await parseJsonBody(req);
+      const { image, animalType, symptoms } = body;
+
+      if (!image || typeof image !== 'string' || !image.trim()) {
+        sendJson(res, 400, { error: 'An animal photograph is required for analysis.' });
+        return true;
+      }
+
+      const species = typeof animalType === 'string' && animalType.trim() ? animalType.trim() : 'Cattle';
+      const userSymptoms = Array.isArray(symptoms) ? symptoms.map(s => String(s).trim()).filter(Boolean) : [];
+
+      // 1. Image Quality Pre-check (Resolution, format, corruption, size, darkness)
+      const quality = await validateImageQuality(image);
+      if (!quality.valid) {
+        sendJson(res, 400, {
+          error: quality.error || 'The image is not clear enough for analysis. Please upload a well-lit photo showing the affected area.'
+        });
+        return true;
+      }
+
+      // 2. Persist image to server storage (public/uploads/)
+      let savedImageUrl: string;
+      try {
+        if (image.startsWith('data:')) {
+          savedImageUrl = db.saveUploadedImage(image, `${species.toLowerCase().replace(/[^a-z0-9]/g, '-')}-scan.jpg`);
+        } else if (image.startsWith('http://') || image.startsWith('https://')) {
+          savedImageUrl = db.saveUploadedImage(`data:${quality.mimeType};base64,${quality.base64Data}`, `${species.toLowerCase().replace(/[^a-z0-9]/g, '-')}-scan.jpg`);
+        } else {
+          savedImageUrl = db.saveUploadedImage(image, `${species.toLowerCase().replace(/[^a-z0-9]/g, '-')}-scan.jpg`);
+        }
+      } catch (uploadErr: any) {
+        console.error('Failed to store image on server:', uploadErr);
+        savedImageUrl = image.startsWith('http') ? image : '/uploads/default-scan.jpg';
+      }
+
+      // 3. MobileNetV2 Model Analysis (via FastAPI backend / local model)
+      let aiOutput: AiPredictionOutput;
+      try {
+        const authHeader = req.headers['authorization'] || '';
+        const token = authHeader.replace(/^Bearer\s+/i, '');
+        aiOutput = await analyzeAnimalImage(quality, species, userSymptoms, token);
+      } catch (aiErr: any) {
+        console.warn('[MobileNetV2 Status]', aiErr.message || aiErr);
+        sendJson(res, 503, {
+          error: aiErr.message || 'Custom MobileNetV2 disease detection model has not been trained or installed yet.',
+          modelReady: false,
+          architecture: 'MobileNetV2'
+        });
+        return true;
+      }
+
+      // 4. Save analysis record to database strictly tied to authenticated user ID
+      const newAnalysis = db.createAnalysis({
+        userId: user.id, // Strictly tied to authenticated user ID
+        animalType: aiOutput.animalType || species,
+        imageUrl: savedImageUrl,
+        predictedDisease: aiOutput.possibleDisease,
+        possibleDisease: aiOutput.possibleDisease,
+        pathogen: aiOutput.possibleDisease.includes('Healthy') || aiOutput.possibleDisease.includes('Normal')
+          ? 'None detected'
+          : aiOutput.possibleDisease === 'Unable to determine'
+            ? 'Undetermined'
+            : 'Identified via visual pathology',
+        confidence: aiOutput.confidenceScore,
+        confidenceLevel: aiOutput.confidenceLevel,
+        severity: aiOutput.severity,
+        symptoms: aiOutput.visibleSymptoms.length > 0 ? aiOutput.visibleSymptoms : userSymptoms,
+        visibleSymptoms: aiOutput.visibleSymptoms,
+        possibleCauses: aiOutput.alternativePossibilities.length > 0 ? aiOutput.alternativePossibilities : ['Visual assessment'],
+        alternativePossibilities: aiOutput.alternativePossibilities,
+        recommendedCare: [aiOutput.recommendedNextSteps, aiOutput.veterinarianRecommendation].filter(Boolean),
+        recommendedNextSteps: aiOutput.recommendedNextSteps,
+        quarantineProtocol: aiOutput.recommendedNextSteps,
+        urgency: aiOutput.veterinarianRecommendation,
+        veterinarianRecommendation: aiOutput.veterinarianRecommendation,
+        summary: aiOutput.explanation,
+        explanation: aiOutput.explanation
+      });
+
+      // 5. Send structured result to React frontend
+      sendJson(res, 200, {
+        success: true,
+        result: {
+          animalType: aiOutput.animalType,
+          possibleDisease: aiOutput.possibleDisease,
+          alternativePossibilities: aiOutput.alternativePossibilities,
+          visibleSymptoms: aiOutput.visibleSymptoms,
+          severity: aiOutput.severity,
+          confidenceLevel: aiOutput.confidenceLevel,
+          confidence: aiOutput.confidenceScore,
+          explanation: aiOutput.explanation,
+          recommendedNextSteps: aiOutput.recommendedNextSteps,
+          veterinarianRecommendation: aiOutput.veterinarianRecommendation,
+          imageUrl: savedImageUrl,
+          engineUsed: aiOutput.engineUsed || 'clinical-neural-engine'
+        },
+        analysis: newAnalysis
+      });
+      return true;
+    }
+
+    /* ---------------------------------------------------- MOBILENETV2 MODEL STATUS */
+
+    // GET /api/model/status & GET /api/ai/status
+    if ((pathname === '/api/model/status' || pathname === '/api/ai/status') && method === 'GET') {
+      const status = await getModelStatus();
+      sendJson(res, 200, {
+        ...status,
+        configured: status.installed,
+        provider: 'mobilenetv2',
+        model: 'mobilenet_v2',
+        hasKey: false,
+        maskedKey: ''
+      });
+      return true;
+    }
+
+    // POST /api/ai/test & POST /api/ai/configure (Disabled in favor of local MobileNetV2)
+    if ((pathname === '/api/ai/test' || pathname === '/api/ai/configure') && method === 'POST') {
+      sendJson(res, 200, {
+        success: false,
+        message: 'External AI API keys are disabled. Disease detection runs via local custom trained MobileNetV2 model.'
+      });
+      return true;
+    }
+
     /* ---------------------------------------------------- ANALYSIS HISTORY */
 
     // GET /api/analyses
@@ -238,36 +375,57 @@ export async function handleApiRequest(req: IncomingMessage, res: ServerResponse
         animalType,
         imageUrl,
         predictedDisease,
+        possibleDisease,
         pathogen,
         confidence,
+        confidenceLevel,
         severity,
         symptoms,
+        visibleSymptoms,
         possibleCauses,
+        alternativePossibilities,
         recommendedCare,
+        recommendedNextSteps,
         quarantineProtocol,
         urgency,
-        summary
+        veterinarianRecommendation,
+        summary,
+        explanation
       } = body;
 
-      if (!predictedDisease || !imageUrl) {
-        sendJson(res, 400, { error: 'Missing required analysis fields (predictedDisease, imageUrl).' });
+      const finalDisease = possibleDisease || predictedDisease;
+      if (!finalDisease || !imageUrl) {
+        sendJson(res, 400, { error: 'Missing required analysis fields (predictedDisease/possibleDisease, imageUrl).' });
         return true;
       }
+
+      const finalSymptoms = visibleSymptoms || symptoms || [];
+      const finalAlternatives = alternativePossibilities || (Array.isArray(possibleCauses) ? possibleCauses : [possibleCauses].filter(Boolean));
+      const finalSummary = explanation || summary || 'Clinical evaluation recorded.';
+      const finalProtocol = recommendedNextSteps || quarantineProtocol || 'Standard observation protocol.';
+      const finalUrgency = veterinarianRecommendation || urgency || 'Standard triage';
 
       const newAnalysis = db.createAnalysis({
         userId: user.id, // Strictly tied to authenticated user ID
         animalType: animalType || 'Cattle',
         imageUrl,
-        predictedDisease,
+        predictedDisease: finalDisease,
+        possibleDisease: finalDisease,
         pathogen: pathogen || 'Unspecified',
-        confidence: Number(confidence) || 90.0,
+        confidence: Number(confidence) || 85.0,
+        confidenceLevel: confidenceLevel || (Number(confidence) >= 80 ? 'High' : Number(confidence) >= 60 ? 'Moderate' : 'Low'),
         severity: severity || 'moderate',
-        symptoms: Array.isArray(symptoms) ? symptoms : [],
-        possibleCauses: Array.isArray(possibleCauses) ? possibleCauses : [possibleCauses].filter(Boolean),
-        recommendedCare: Array.isArray(recommendedCare) ? recommendedCare : [],
-        quarantineProtocol: quarantineProtocol || 'Standard observation protocol.',
-        urgency: urgency || 'Standard triage',
-        summary: summary || 'Clinical evaluation recorded.'
+        symptoms: Array.isArray(finalSymptoms) ? finalSymptoms : [],
+        visibleSymptoms: Array.isArray(finalSymptoms) ? finalSymptoms : [],
+        possibleCauses: finalAlternatives,
+        alternativePossibilities: finalAlternatives,
+        recommendedCare: Array.isArray(recommendedCare) ? recommendedCare : [finalProtocol, finalUrgency],
+        recommendedNextSteps: finalProtocol,
+        quarantineProtocol: finalProtocol,
+        urgency: finalUrgency,
+        veterinarianRecommendation: finalUrgency,
+        summary: finalSummary,
+        explanation: finalSummary
       });
 
       sendJson(res, 201, {

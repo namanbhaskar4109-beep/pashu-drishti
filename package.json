@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "backend": "python run_backend.py",
+    "train:mobilenet": "python backend/ml/train_mobilenetv2.py"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",

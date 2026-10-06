@@ -1,122 +1,79 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Upload, Camera, AlertCircle, CheckCircle, RefreshCw, FileText, ArrowRight, Sparkles, ShieldAlert, HeartPulse, X, Lock } from 'lucide-react';
+import {
+  Upload, Camera, AlertCircle, CheckCircle, RefreshCw, FileText,
+  ArrowRight, Sparkles, ShieldAlert, HeartPulse, X, Lock, Settings2,
+  Check, Info, Cpu, AlertTriangle
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from '../context/AuthContext';
-import { api } from '../services/api';
+import { api, type ModelStatus } from '../services/api';
 
 interface DiseaseResult {
   disease: string;
   pathogen: string;
   confidence: number;
+  confidenceLevel?: string;
   severity: 'healthy' | 'moderate' | 'high' | 'critical';
   summary: string;
   detectedSymptoms: string[];
   quarantineProtocol: string;
   treatmentNotes: string[];
   urgency: string;
+  alternativePossibilities?: string[];
+  engineUsed?: string;
 }
 
-interface SampleCase {
+interface SamplePreset {
   id: string;
   title: string;
   species: string;
   imageUrl: string;
-  symptoms: string[];
-  result: DiseaseResult;
+  description?: string;
 }
 
-const SAMPLE_CASES: SampleCase[] = [
+const SAMPLE_PRESETS: SamplePreset[] = [
   {
     id: 'lsd-cattle',
-    title: 'Lumpy Skin Disease',
+    title: 'Lumpy Skin Bovine Specimen',
     species: 'Cattle',
     imageUrl: 'https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=800&auto=format&fit=crop&q=80',
-    symptoms: ['Skin nodules/lumps', 'Fever', 'Enlarged lymph nodes', 'Loss of appetite'],
-    result: {
-      disease: 'Lumpy Skin Disease (LSD)',
-      pathogen: 'Capripoxvirus (Poxviridae)',
-      confidence: 96.8,
-      severity: 'high',
-      summary: 'Pronounced circumscribed cutaneous nodules (2-5cm) observed across the neck, flank, and perineum. Accompanied by localized edema.',
-      detectedSymptoms: ['Cutaneous nodules', 'Epidermal necrosis', 'Enlarged prescapular lymph nodes'],
-      quarantineProtocol: 'Mandatory immediate isolation of infected individual. Implement strict vector control (mosquitoes/biting flies). Restrict movement within 5km radius.',
-      treatmentNotes: [
-        'Symptomatic care: antipyretics and non-steroidal anti-inflammatories',
-        'Broad-spectrum antibiotics to prevent secondary bacterial infections',
-        'Topical antiseptics and wound dressings on ruptured nodules',
-        'Notify local veterinary animal husbandry authorities for statutory record'
-      ],
-      urgency: 'HIGH — Veterinary visit required within 12-24 hours'
-    }
+    description: 'Prominent cutaneous nodules'
   },
   {
     id: 'healthy-cow',
-    title: 'Healthy Dairy Cow',
+    title: 'Healthy Dairy Cattle',
     species: 'Cattle',
     imageUrl: 'https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?w=800&auto=format&fit=crop&q=80',
-    symptoms: ['Alert posture', 'Clean coat', 'Normal rumination'],
-    result: {
-      disease: 'Normal / Healthy Specimen',
-      pathogen: 'None detected',
-      confidence: 97.4,
-      severity: 'healthy',
-      summary: 'Smooth dermatological surface, alert ear posture, moist clean muzzle, and normal corneal reflection. No visible lesions or inflammatory indicators.',
-      detectedSymptoms: ['Glossy pelage', 'Symmetric muzzle', 'Clear ocular margins'],
-      quarantineProtocol: 'No quarantine needed. Maintain standard biosecurity and scheduled herd vaccinations.',
-      treatmentNotes: [
-        'Continue balanced nutritional rationing and mineral blocks',
-        'Monitor periodic milk yields and somatic cell counts',
-        'Maintain seasonal deworming schedule'
-      ],
-      urgency: 'ROUTINE — Regular preventive monitoring'
-    }
-  },
-  {
-    id: 'fmd-sheep',
-    title: 'Foot & Mouth Suspicion',
-    species: 'Sheep / Goat',
-    imageUrl: 'https://images.unsplash.com/photo-1484557052118-f32bd25b45b5?w=800&auto=format&fit=crop&q=80',
-    symptoms: ['Lameness', 'Blisters on hooves', 'Excessive salivation', 'Reluctance to stand'],
-    result: {
-      disease: 'Foot and Mouth Disease (FMD)',
-      pathogen: 'Aphthovirus (Picornaviridae)',
-      confidence: 94.2,
-      severity: 'critical',
-      summary: 'Erosive vesicular lesions identified near the coronary hoof band with interdigital dermatitis and oral tenderness.',
-      detectedSymptoms: ['Coronary band erosions', 'Reluctance to bear weight', 'Salivary hypersecretion'],
-      quarantineProtocol: 'CRITICAL BIOSECURITY ALERT. Quarantine entire flock immediately. Disinfect all footwear, equipment, and transport vehicles with sodium carbonate or citric acid.',
-      treatmentNotes: [
-        'Strict statutory reporting disease — notify state veterinarian immediately',
-        'Flunixin meglumine or meloxicam for pain mitigation under supervision',
-        'Soft forage feeding to ease oral discomfort',
-        'Do not move any animals off the premises'
-      ],
-      urgency: 'CRITICAL — Urgent statutory reporting & emergency quarantine'
-    }
+    description: 'Normal alert bovine posture'
   },
   {
     id: 'mastitis-cattle',
-    title: 'Bovine Mastitis',
+    title: 'Bovine Health Specimen',
     species: 'Cattle',
     imageUrl: 'https://images.unsplash.com/photo-1527153857715-3908f2ae5e81?w=800&auto=format&fit=crop&q=80',
-    symptoms: ['Udder swelling', 'Heat in quarters', 'Abnormal milk flakes', 'Pain on milking'],
-    result: {
-      disease: 'Acute Clinical Mastitis',
-      pathogen: 'Staphylococcus aureus / Streptococcus uberis',
-      confidence: 93.6,
-      severity: 'high',
-      summary: 'Asymmetric quarter enlargement, erythema, localized hyperthermia, and palpable hardness indicating active intramammary infection.',
-      detectedSymptoms: ['Quarter inflammation', 'Edematous tissue', 'Elevated somatic indicators'],
-      quarantineProtocol: 'Milk infected animal last. Disinfect milking clusters thoroughly. Discard milk from affected quarter.',
-      treatmentNotes: [
-        'Intramammary antibiotic infusion following aseptic teat scrub',
-        'Systemic anti-inflammatory therapy (e.g. Ketoprofen)',
-        'Frequent stripping of affected quarter to flush bacterial toxins',
-        'Post-milking teat dip with 0.5% iodine solution'
-      ],
-      urgency: 'HIGH — Same-day veterinary intervention recommended'
-    }
+    description: 'Udder monitoring case'
+  },
+  {
+    id: 'fmd-sheep',
+    title: 'Flock Biosecurity Specimen',
+    species: 'Sheep / Goat',
+    imageUrl: 'https://images.unsplash.com/photo-1484557052118-f32bd25b45b5?w=800&auto=format&fit=crop&q=80',
+    description: 'Small ruminant screening'
+  },
+  {
+    id: 'healthy-dog',
+    title: 'Canine Health Specimen',
+    species: 'Pet / Canine',
+    imageUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800&auto=format&fit=crop&q=80',
+    description: 'Companion animal examination'
+  },
+  {
+    id: 'healthy-horse',
+    title: 'Equine Wellness Specimen',
+    species: 'Horse',
+    imageUrl: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=800&auto=format&fit=crop&q=80',
+    description: 'Equine musculoskeletal check'
   }
 ];
 
@@ -125,16 +82,50 @@ export const DetectPage: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
 
   const [selectedSpecies, setSelectedSpecies] = useState('Cattle');
-  const [selectedSample, setSelectedSample] = useState<SampleCase | null>(SAMPLE_CASES[0]);
-  const [uploadedImage, setUploadedImage] = useState<string | null>(SAMPLE_CASES[0].imageUrl);
+  const [selectedSample, setSelectedSample] = useState<SamplePreset | null>(SAMPLE_PRESETS[0]);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(SAMPLE_PRESETS[0].imageUrl);
   const [isScanning, setIsScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
   const [scanStepText, setScanStepText] = useState('');
-  const [result, setResult] = useState<DiseaseResult | null>(SAMPLE_CASES[0].result);
-  const [activeSymptoms, setActiveSymptoms] = useState<string[]>(['Skin nodules/lumps', 'Fever']);
+  const [result, setResult] = useState<DiseaseResult | null>(null);
+  const [activeSymptoms, setActiveSymptoms] = useState<string[]>([]);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // MobileNetV2 Architecture & Readiness State
+  const [modelStatus, setModelStatus] = useState<ModelStatus | null>(null);
+  const [showModelModal, setShowModelModal] = useState(false);
+  const [isRefreshingModel, setIsRefreshingModel] = useState(false);
+
+  // Load MobileNetV2 Model Status on mount
+  useEffect(() => {
+    fetchModelStatus();
+  }, []);
+
+  const fetchModelStatus = async () => {
+    setIsRefreshingModel(true);
+    try {
+      const status = await api.model.getStatus();
+      setModelStatus(status);
+    } catch {
+      setModelStatus({
+        installed: false,
+        trained: false,
+        architecture: 'MobileNetV2',
+        modelName: 'Custom MobileNetV2 Animal Disease Classifier',
+        activeEngine: 'Custom MobileNetV2 (Not trained/installed yet)',
+        modelPath: 'backend/models/mobilenetv2_animal_disease.pth',
+        classes: [],
+        numClasses: 0,
+        device: 'cpu',
+        message: 'Custom MobileNetV2 model has not been trained or installed yet.'
+      });
+    } finally {
+      setIsRefreshingModel(false);
+    }
+  };
 
   const symptomOptions = [
     'Skin nodules/lumps',
@@ -147,13 +138,29 @@ export const DetectPage: React.FC = () => {
     'Hair loss / Scabbing'
   ];
 
-  const handleSelectSample = (sample: SampleCase) => {
+  const handleSelectSpecies = (species: string) => {
+    setSelectedSpecies(species);
+    setResult(null);
+    setAnalysisError(null);
+
+    // If currently selected sample preset does not match newly selected species,
+    // auto-switch to a preset matching that species
+    if (selectedSample && selectedSample.species !== species) {
+      const match = SAMPLE_PRESETS.find(p => p.species === species);
+      if (match) {
+        setSelectedSample(match);
+        setUploadedImage(match.imageUrl);
+      }
+    }
+  };
+
+  const handleSelectSample = (sample: SamplePreset) => {
     setSelectedSample(sample);
     setUploadedImage(sample.imageUrl);
     setSelectedSpecies(sample.species);
-    setActiveSymptoms(sample.symptoms);
     setResult(null);
     setSaveStatus('idle');
+    setAnalysisError(null);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,18 +172,19 @@ export const DetectPage: React.FC = () => {
         setSelectedSample(null);
         setResult(null);
         setSaveStatus('idle');
+        setAnalysisError(null);
       };
       reader.readAsDataURL(file);
     }
   };
 
   const toggleSymptom = (sym: string) => {
-    setActiveSymptoms(prev => 
+    setActiveSymptoms(prev =>
       prev.includes(sym) ? prev.filter(s => s !== sym) : [...prev, sym]
     );
   };
 
-  const triggerScan = () => {
+  const triggerScan = async () => {
     if (!uploadedImage) return;
 
     // Protection: Prompt authentication if not logged in
@@ -186,110 +194,146 @@ export const DetectPage: React.FC = () => {
     }
 
     setIsScanning(true);
-    setScanProgress(0);
+    setScanProgress(15);
+    setScanStepText('Preprocessing image for MobileNetV2...');
     setResult(null);
-    setSaveStatus('idle');
+    setAnalysisError(null);
+    setSaveStatus('saving');
 
     const steps = [
-      'Initializing veterinary neural vision pipeline...',
-      'Segmenting epidermal contours and lesion margins...',
-      'Extracting multi-spectral pathology markers...',
-      'Matching against veterinary pathology database...',
-      'Synthesizing diagnostic report & quarantine triage...'
+      { text: 'Validating image resolution & tensor format...', target: 35 },
+      { text: `Evaluating ${selectedSpecies} photograph with MobileNetV2...`, target: 60 },
+      { text: 'Extracting convolutional feature embeddings...', target: 82 },
+      { text: 'Computing class probability distribution...', target: 94 }
     ];
 
-    let currentStep = 0;
+    let currentStepIdx = 0;
     const interval = setInterval(() => {
       setScanProgress(prev => {
-        const next = prev + 4;
-        if (next >= 100) {
-          clearInterval(interval);
-          setIsScanning(false);
-          
-          // If sample was chosen, use its result; otherwise calculate smart simulated result
-          const outcome = selectedSample ? selectedSample.result : {
-            disease: activeSymptoms.includes('Skin nodules/lumps') ? 'Suspected Dermatological Mycosis' : 'Equine/Bovine Seasonal Dermatitis',
-            pathogen: 'Microsporum / Trichophyton verrucosum',
-            confidence: 91.5,
-            severity: 'moderate' as const,
-            summary: 'Circumscribed focal lesions with epidermal desquamation detected. Mild hyperkeratosis present.',
-            detectedSymptoms: activeSymptoms.slice(0, 3),
-            quarantineProtocol: 'Separate animal from healthy livestock pens. Avoid shared grooming brushes and tack.',
-            treatmentNotes: [
-              'Topical chlorhexidine or miconazole shampoo application',
-              'Expose animal to direct sunlight if feasible (anti-fungal inhibition)',
-              'Disinfect stable walls and feeding troughs with diluted hypochlorite'
-            ],
-            urgency: 'MODERATE — Non-emergency clinical evaluation recommended'
-          };
-
-          setResult(outcome);
-
-          // Celebrate if healthy!
-          if (outcome.severity === 'healthy') {
-            confetti({
-              particleCount: 80,
-              spread: 60,
-              origin: { y: 0.6 }
-            });
-          }
-
-          // Automatically persist analysis to database for logged in user
-          if (outcome && uploadedImage) {
-            setSaveStatus('saving');
-            (async () => {
-              try {
-                let finalImageUrl = uploadedImage;
-                // If uploaded image is a base64 string, store on server
-                if (uploadedImage.startsWith('data:')) {
-                  const uploadRes = await api.storage.uploadImage(uploadedImage, `${selectedSpecies.toLowerCase()}-scan.jpg`);
-                  finalImageUrl = uploadRes.imageUrl;
-                }
-
-                await api.analyses.save({
-                  animalType: selectedSpecies,
-                  imageUrl: finalImageUrl,
-                  predictedDisease: outcome.disease,
-                  pathogen: outcome.pathogen,
-                  confidence: outcome.confidence,
-                  severity: outcome.severity,
-                  symptoms: outcome.detectedSymptoms,
-                  possibleCauses: ['Vector transmission', 'Epidermal infection'],
-                  recommendedCare: outcome.treatmentNotes,
-                  quarantineProtocol: outcome.quarantineProtocol,
-                  urgency: outcome.urgency,
-                  summary: outcome.summary,
-                });
-                setSaveStatus('saved');
-              } catch (saveErr) {
-                console.error('Failed to auto-save analysis:', saveErr);
-                setSaveStatus('error');
-              }
-            })();
-          }
-
-          return 100;
+        const stepTarget = steps[currentStepIdx]?.target || 94;
+        if (prev < stepTarget) {
+          return prev + 4;
+        } else if (currentStepIdx < steps.length - 1) {
+          currentStepIdx++;
+          setScanStepText(steps[currentStepIdx].text);
         }
-
-        // Update step text
-        const stepIdx = Math.min(steps.length - 1, Math.floor((next / 100) * steps.length));
-        if (stepIdx !== currentStep) {
-          currentStep = stepIdx;
-          setScanStepText(steps[stepIdx]);
-        }
-        return next;
+        return prev;
       });
-    }, 60);
+    }, 130);
+
+    try {
+      // Call backend endpoint POST /api/predict with image, species, and checked symptoms
+      const res = await api.predict.run({
+        image: uploadedImage,
+        animalType: selectedSpecies,
+        symptoms: activeSymptoms
+      });
+
+      clearInterval(interval);
+      setScanProgress(100);
+      setScanStepText('Analysis complete');
+
+      const aiRes = res.result;
+
+      // Map to UI result model
+      const outcome: DiseaseResult = {
+        disease: aiRes.possibleDisease,
+        pathogen: aiRes.possibleDisease.includes('Healthy') || aiRes.possibleDisease.includes('Normal')
+          ? 'None detected'
+          : aiRes.possibleDisease === 'Unable to determine'
+            ? 'Undetermined'
+            : (aiRes.possibleDisease.includes('Lumpy') ? 'Capripoxvirus (Poxviridae)'
+              : aiRes.possibleDisease.includes('Mastitis') ? 'Staphylococcus aureus / Streptococcus'
+              : aiRes.possibleDisease.includes('Foot') ? 'Aphthovirus (Picornaviridae)'
+              : aiRes.possibleDisease.includes('Peste') || aiRes.possibleDisease.includes('PPR') ? 'Small Ruminant Morbillivirus'
+              : aiRes.possibleDisease.includes('Mange') ? 'Demodex canis / Sarcoptes scabiei'
+              : aiRes.possibleDisease.includes('Strangles') ? 'Streptococcus equi subsp. equi'
+              : aiRes.possibleDisease.includes('Erysipelas') ? 'Erysipelothrix rhusiopathiae'
+              : 'Identified via MobileNetV2 visual pathology'),
+        confidence: aiRes.confidence,
+        confidenceLevel: aiRes.confidenceLevel,
+        severity: aiRes.severity,
+        summary: aiRes.explanation,
+        detectedSymptoms: aiRes.visibleSymptoms && aiRes.visibleSymptoms.length > 0
+          ? aiRes.visibleSymptoms
+          : (activeSymptoms.length > 0 ? activeSymptoms : ['Visual inspection evaluated']),
+        quarantineProtocol: aiRes.recommendedNextSteps,
+        treatmentNotes: aiRes.alternativePossibilities && aiRes.alternativePossibilities.length > 0
+          ? [
+              `Differential considerations: ${aiRes.alternativePossibilities.join(', ')}`,
+              aiRes.recommendedNextSteps,
+              aiRes.veterinarianRecommendation
+            ]
+          : [aiRes.recommendedNextSteps, aiRes.veterinarianRecommendation],
+        urgency: aiRes.veterinarianRecommendation,
+        alternativePossibilities: aiRes.alternativePossibilities,
+        engineUsed: aiRes.engineUsed || 'Custom MobileNetV2 CNN'
+      };
+
+      setTimeout(() => {
+        setIsScanning(false);
+        setResult(outcome);
+        setSaveStatus('saved');
+
+        // Celebrate if healthy!
+        if (outcome.severity === 'healthy') {
+          confetti({
+            particleCount: 80,
+            spread: 60,
+            origin: { y: 0.6 }
+          });
+        }
+      }, 300);
+
+    } catch (err: any) {
+      clearInterval(interval);
+      setIsScanning(false);
+      setScanProgress(0);
+      setScanStepText('');
+      setAnalysisError(err.message || 'We could not analyze this image right now. Please try again.');
+      setSaveStatus('error');
+    }
   };
 
   return (
     <div className="detect-page-container">
-      {/* Top Header */}
+      {/* Editorial Header */}
       <div className="detect-header">
-        <div className="editorial-badge">
-          <HeartPulse size={14} />
-          <span>REAL-TIME COMPUTER VISION DIAGNOSTICS</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+          <div className="editorial-badge">
+            <Sparkles size={14} className="text-emerald-400" />
+            <span>AI CLINICAL PATHOLOGY // STUDIO</span>
+          </div>
+
+          <button
+            id="ai-engine-status-btn"
+            onClick={() => setShowModelModal(true)}
+            className="filter-tab-pill"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 14px',
+              fontSize: '0.8rem',
+              cursor: 'pointer',
+              background: 'var(--bg-secondary)',
+              border: '1px solid var(--border-editorial)'
+            }}
+            title="Click to view MobileNetV2 architecture and training status"
+          >
+            <span
+              className="status-online"
+              style={{
+                width: '8px',
+                height: '8px',
+                backgroundColor: modelStatus?.installed ? '#10B981' : '#F59E0B'
+              }}
+            />
+            <span>{modelStatus?.installed ? 'MobileNetV2 Active' : 'MobileNetV2 (Pending Training)'}</span>
+            <Cpu size={13} style={{ color: 'var(--text-secondary)' }} />
+          </button>
         </div>
+
         <h1 style={{ fontFamily: 'var(--font-editorial)', fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)', fontWeight: 800 }}>
           Animal Disease Detection Studio
         </h1>
@@ -299,10 +343,10 @@ export const DetectPage: React.FC = () => {
       </div>
 
       <div className="detect-layout">
-        
+
         {/* LEFT COLUMN: Input & Upload Panel */}
         <div className="upload-panel">
-          
+
           {/* Species Selector */}
           <div>
             <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
@@ -312,8 +356,8 @@ export const DetectPage: React.FC = () => {
               {['Cattle', 'Sheep / Goat', 'Horse', 'Swine', 'Pet / Canine'].map((spec) => (
                 <button
                   key={spec}
-                  onClick={() => setSelectedSpecies(spec)}
-                  className={`filter-tab-pill ${selectedSpecies.includes(spec.split(' ')[0]) ? 'active' : ''}`}
+                  onClick={() => handleSelectSpecies(spec)}
+                  className={`filter-tab-pill ${selectedSpecies === spec ? 'active' : ''}`}
                 >
                   {spec}
                 </button>
@@ -323,11 +367,13 @@ export const DetectPage: React.FC = () => {
 
           {/* Quick Preset Cases */}
           <div className="sample-selector">
-            <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Quick Presets (Click to Test Immediately):
-            </label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Quick Presets (Click to Test Immediately):
+              </label>
+            </div>
             <div className="sample-grid">
-              {SAMPLE_CASES.map((sc) => (
+              {SAMPLE_PRESETS.map((sc) => (
                 <button
                   key={sc.id}
                   onClick={() => handleSelectSample(sc)}
@@ -345,23 +391,23 @@ export const DetectPage: React.FC = () => {
             <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               2. Capture or Upload Inspection Image
             </label>
-            
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              style={{ display: 'none' }} 
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
               accept="image/*"
               onChange={handleFileUpload}
             />
 
-            <div 
+            <div
               className="dropzone-area"
               onClick={() => fileInputRef.current?.click()}
             >
               {uploadedImage ? (
                 <div style={{ position: 'relative', width: '100%' }}>
                   <img src={uploadedImage} alt="Uploaded animal specimen" className="dropzone-preview-img" />
-                  
+
                   {/* Laser scan animation when active */}
                   {isScanning && (
                     <div className="scanning-overlay">
@@ -406,15 +452,15 @@ export const DetectPage: React.FC = () => {
               {symptomOptions.map((sym) => {
                 const checked = activeSymptoms.includes(sym);
                 return (
-                  <div 
-                    key={sym} 
+                  <div
+                    key={sym}
                     className={`symptom-toggle ${checked ? 'checked' : ''}`}
                     onClick={() => toggleSymptom(sym)}
                   >
-                    <input 
-                      type="checkbox" 
-                      checked={checked} 
-                      readOnly 
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      readOnly
                       style={{ accentColor: 'var(--accent-green)' }}
                     />
                     <span>{sym}</span>
@@ -425,7 +471,7 @@ export const DetectPage: React.FC = () => {
           </div>
 
           {/* Action Button */}
-          <button 
+          <button
             id="run-analysis-btn"
             onClick={triggerScan}
             disabled={isScanning || !uploadedImage}
@@ -460,17 +506,56 @@ export const DetectPage: React.FC = () => {
 
         </div>
 
-        {/* RIGHT COLUMN: Real-Time Diagnostic Results Panel */}
+        {/* RIGHT COLUMN: Diagnostic Results Panel */}
         <div className="results-panel">
-          
+
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-tertiary)' }}>
               DIAGNOSTIC REPORT
             </span>
             <div className="editorial-version-pill">
-              <span className="status-online">MODEL ACTIVE</span>
+              <span
+                className="status-online"
+                style={{ backgroundColor: modelStatus?.installed ? '#10B981' : '#F59E0B' }}
+              >
+                {modelStatus?.installed ? 'MOBILENETV2 ACTIVE' : 'MODEL PENDING TRAINING'}
+              </span>
             </div>
           </div>
+
+          {analysisError && !isScanning && (
+            <div
+              style={{
+                marginTop: '16px',
+                padding: '16px 20px',
+                borderRadius: '12px',
+                background: 'rgba(245, 158, 11, 0.08)',
+                border: '1px solid rgba(245, 158, 11, 0.3)',
+                color: '#FDE68A',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, fontSize: '0.95rem', color: '#FBBF24' }}>
+                <AlertTriangle size={18} style={{ color: '#F59E0B' }} />
+                <span>MobileNetV2 Model Notification</span>
+              </div>
+              <p style={{ fontSize: '0.88rem', margin: 0, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                {analysisError}
+              </p>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '6px', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowModelModal(true)}
+                  className="filter-tab-pill"
+                  style={{ padding: '6px 14px', fontSize: '0.8rem', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.4)' }}
+                >
+                  View Model Architecture & Setup Guide →
+                </button>
+              </div>
+            </div>
+          )}
 
           {!result && !isScanning && (
             <div className="result-empty-state">
@@ -487,21 +572,30 @@ export const DetectPage: React.FC = () => {
               <RefreshCw size={44} className="animate-spin text-emerald-500" />
               <h3 style={{ fontSize: '1.25rem' }}>Processing Specimen Matrix</h3>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                Comparing image features against 250,000+ veterinary pathology records...
+                Analyzing animal image features and pathology indicators with Vision AI...
               </p>
             </div>
           )}
 
           {result && !isScanning && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              
+
               {/* Severity & Confidence Row */}
               <div className="result-badge-row">
                 <div className={`severity-pill severity-${result.severity}`}>
                   {result.severity.toUpperCase()} PRIORITY
                 </div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700 }}>
-                  <span style={{ color: 'var(--accent-green-hover)' }}>{result.confidence}%</span> Confidence
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', fontWeight: 700 }}>
+                    <span style={{ color: 'var(--accent-green-hover)' }}>
+                      {result.confidenceLevel ? `${result.confidenceLevel} (${result.confidence}%)` : `${result.confidence}%`}
+                    </span> AI Assessment
+                  </div>
+                  {result.engineUsed && (
+                    <span className="species-tag" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
+                      {result.engineUsed || 'MobileNetV2 CNN'}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -625,12 +719,148 @@ export const DetectPage: React.FC = () => {
 
       </div>
 
+      {/* ================= MOBILENETV2 MODEL ARCHITECTURE & READINESS MODAL ================= */}
+      {showModelModal && (
+        <div className="analysis-modal-backdrop" onClick={() => setShowModelModal(false)}>
+          <div
+            className="analysis-modal-card"
+            style={{ maxWidth: '560px', padding: '32px 28px', textAlign: 'left' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+              <div>
+                <div className="editorial-badge" style={{ marginBottom: '6px' }}>
+                  <Cpu size={12} className="text-emerald-400" />
+                  <span>LOCAL DEEP LEARNING ARCHITECTURE</span>
+                </div>
+                <h3 style={{ fontFamily: 'var(--font-editorial)', fontSize: '1.6rem', color: '#fff' }}>
+                  MobileNetV2 Inference Engine
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowModelModal(false)}
+                style={{ background: 'none', border: 'none', color: 'var(--text-tertiary)', cursor: 'pointer' }}
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Current Active Engine Banner */}
+            <div style={{
+              background: 'var(--bg-secondary)',
+              border: '1px solid var(--border-editorial)',
+              borderRadius: '12px',
+              padding: '16px',
+              marginBottom: '20px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span
+                  style={{
+                    width: '10px',
+                    height: '10px',
+                    borderRadius: '50%',
+                    backgroundColor: modelStatus?.installed ? '#10B981' : '#F59E0B',
+                    display: 'inline-block'
+                  }}
+                />
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#fff' }}>
+                    Engine Status: {modelStatus?.installed ? 'Trained Model Active & Ready' : 'Model Pending Training'}
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                    {modelStatus?.message || 'Custom MobileNetV2 image classifier configured.'}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Architecture Specifications Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginBottom: '18px' }}>
+              <div style={{ background: 'rgba(255,255,255,0.02)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border-editorial)' }}>
+                <div style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--text-tertiary)' }}>CNN ARCHITECTURE</div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff', marginTop: '2px' }}>MobileNetV2</div>
+              </div>
+
+              <div style={{ background: 'rgba(255,255,255,0.02)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border-editorial)' }}>
+                <div style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--text-tertiary)' }}>BACKEND RUNTIME</div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff', marginTop: '2px' }}>FastAPI (Python)</div>
+              </div>
+
+              <div style={{ background: 'rgba(255,255,255,0.02)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border-editorial)' }}>
+                <div style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--text-tertiary)' }}>INPUT RESOLUTION</div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff', marginTop: '2px' }}>224 × 224 × 3 RGB</div>
+              </div>
+
+              <div style={{ background: 'rgba(255,255,255,0.02)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border-editorial)' }}>
+                <div style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--text-tertiary)' }}>DISEASE CLASSES</div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff', marginTop: '2px' }}>
+                  {modelStatus?.numClasses && modelStatus.numClasses > 0 ? `${modelStatus.numClasses} Classes` : 'Awaiting Dataset'}
+                </div>
+              </div>
+            </div>
+
+            {/* Model Target Paths */}
+            <div style={{ marginBottom: '18px', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', borderRadius: '6px', background: 'var(--bg-secondary)', border: '1px solid var(--border-editorial)' }}>
+                <span style={{ color: 'var(--text-tertiary)' }}>Weights Target:</span>
+                <span style={{ fontFamily: 'var(--font-mono)', color: '#A7F3D0' }}>backend/models/mobilenetv2_animal_disease.pth</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', borderRadius: '6px', background: 'var(--bg-secondary)', border: '1px solid var(--border-editorial)' }}>
+                <span style={{ color: 'var(--text-tertiary)' }}>Class Labels:</span>
+                <span style={{ fontFamily: 'var(--font-mono)', color: '#A7F3D0' }}>backend/models/class_indices.json</span>
+              </div>
+            </div>
+
+            {/* Training Instructions Guide */}
+            <div style={{
+              padding: '14px 16px',
+              borderRadius: '8px',
+              background: 'rgba(16, 185, 129, 0.05)',
+              border: '1px solid rgba(16, 185, 129, 0.2)',
+              fontSize: '0.8rem',
+              color: 'var(--text-secondary)',
+              lineHeight: 1.6,
+              marginBottom: '20px'
+            }}>
+              <strong style={{ color: '#fff' }}>Dataset Training Command:</strong>
+              <div style={{ fontFamily: 'monospace', background: 'rgba(0,0,0,0.5)', padding: '8px 12px', borderRadius: '6px', margin: '8px 0', color: '#34D399' }}>
+                python backend/ml/train_mobilenetv2.py --data_dir /path/to/dataset --epochs 25
+              </div>
+              No external AI APIs (Gemini/ChatGPT) are used. Once trained, the weights are automatically saved to the backend and real disease detection will be enabled immediately.
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                type="button"
+                onClick={fetchModelStatus}
+                disabled={isRefreshingModel}
+                className="filter-tab-pill"
+                style={{ flex: 1, padding: '12px', justifyContent: 'center' }}
+              >
+                {isRefreshingModel ? 'Checking Status...' : 'Refresh Status'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowModelModal(false)}
+                className="btn-pill-primary"
+                style={{ flex: 1, padding: '12px', justifyContent: 'center' }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ================= AUTHENTICATION REQUIRED MODAL ================= */}
       {showAuthModal && (
         <div className="analysis-modal-backdrop" onClick={() => setShowAuthModal(false)}>
-          <div 
-            className="analysis-modal-card" 
-            style={{ maxWidth: '440px', textAlign: 'center', padding: '36px 28px' }} 
+          <div
+            className="analysis-modal-card"
+            style={{ maxWidth: '440px', textAlign: 'center', padding: '36px 28px' }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ fontSize: '3rem', marginBottom: '8px' }}>🐄</div>
@@ -638,27 +868,27 @@ export const DetectPage: React.FC = () => {
               <Lock size={12} className="text-amber-400" />
               <span>AUTHENTICATION REQUIRED</span>
             </div>
-            
+
             <h3 style={{ fontFamily: 'var(--font-editorial)', fontSize: '1.7rem', color: '#fff', marginBottom: '8px' }}>
               Sign In to Check Animal Health
             </h3>
-            
+
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '24px' }}>
               Pashu Drishti requires an authenticated account to store diagnostic history, track herd biosecurity, and issue clinical directives.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <Link 
-                to="/login?redirect=/detect" 
+              <Link
+                to="/login?redirect=/detect"
                 className="btn-pill-primary"
                 style={{ width: '100%', justifyContent: 'center', padding: '14px', textDecoration: 'none' }}
               >
                 <span>Sign In to Account</span>
                 <ArrowRight size={16} />
               </Link>
-              
-              <Link 
-                to="/login?mode=signup&redirect=/detect" 
+
+              <Link
+                to="/login?mode=signup&redirect=/detect"
                 style={{
                   color: 'var(--accent-green)',
                   fontSize: '0.88rem',

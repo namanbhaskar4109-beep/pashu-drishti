@@ -26,16 +26,275 @@
       "id": "user-ec435949-c552-4762-a672-f14da0d657c4",
       "createdAt": "2026-10-05T09:00:55.188Z",
       "updatedAt": "2026-10-05T09:00:55.188Z"
+    },
+    {
+      "name": "Aviral",
+      "email": "naman.202304163@tulas.edu.in",
+      "passwordHash": "29b96612819ebdc6ff3ed01c6234c686:242e7e525f2d7fc1c425c46fa5d0ab19eda70e392fe9541f2e8f95c8d2d825d6f93acf1c3ef78bf1d548ff4690e5f587fe9dd0388d3f767e7d82d320c6d25b32",
+      "role": "farmer",
+      "id": "user-a39c8faa-37e3-45a1-a374-77859fdaab98",
+      "createdAt": "2026-10-06T10:23:36.566Z",
+      "updatedAt": "2026-10-06T10:23:36.566Z"
     }
   ],
   "analyses": [
+    {
+      "userId": "user-ec435949-c552-4762-a672-f14da0d657c4",
+      "animalType": "Cattle",
+      "imageUrl": "/uploads/scan-1791265115871-2f3f59b8edef.jpg",
+      "predictedDisease": "Lumpy Skin Disease (LSD)",
+      "possibleDisease": "Lumpy Skin Disease (LSD)",
+      "pathogen": "Identified via visual pathology",
+      "confidence": 89,
+      "confidenceLevel": "High",
+      "severity": "high",
+      "symptoms": [
+        "Cutaneous circumscribed nodules (2-5cm)",
+        "Prescapular lymphadenopathy",
+        "Localized epidermal edema"
+      ],
+      "visibleSymptoms": [
+        "Cutaneous circumscribed nodules (2-5cm)",
+        "Prescapular lymphadenopathy",
+        "Localized epidermal edema"
+      ],
+      "possibleCauses": [
+        "Pseudo-lumpy skin disease (Bovine herpesvirus 2)",
+        "Bovine papular stomatitis",
+        "Demodicosis"
+      ],
+      "alternativePossibilities": [
+        "Pseudo-lumpy skin disease (Bovine herpesvirus 2)",
+        "Bovine papular stomatitis",
+        "Demodicosis"
+      ],
+      "recommendedCare": [
+        "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, broad-spectrum antibiotics to prevent secondary bacterial dermatitis, and apply topical antiseptics to ruptured lesions. Restrict herd movement within 5km radius.",
+        "HIGH PRIORITY — Mandatory statutory notification to district veterinary animal husbandry authorities within 12-24 hours."
+      ],
+      "recommendedNextSteps": "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, broad-spectrum antibiotics to prevent secondary bacterial dermatitis, and apply topical antiseptics to ruptured lesions. Restrict herd movement within 5km radius.",
+      "quarantineProtocol": "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, broad-spectrum antibiotics to prevent secondary bacterial dermatitis, and apply topical antiseptics to ruptured lesions. Restrict herd movement within 5km radius.",
+      "urgency": "HIGH PRIORITY — Mandatory statutory notification to district veterinary animal husbandry authorities within 12-24 hours.",
+      "veterinarianRecommendation": "HIGH PRIORITY — Mandatory statutory notification to district veterinary animal husbandry authorities within 12-24 hours.",
+      "summary": "Characteristic prominent circumscribed cutaneous nodules distributed across the neck, shoulder, and perineum. Accompanied by localized tissue edema and superficial epidermal necrosis indicative of Capripoxvirus infection.",
+      "explanation": "Characteristic prominent circumscribed cutaneous nodules distributed across the neck, shoulder, and perineum. Accompanied by localized tissue edema and superficial epidermal necrosis indicative of Capripoxvirus infection.",
+      "id": "analysis-2e7bc733-308c-4389-b2ca-0109a106a384",
+      "createdAt": "2026-10-06T05:38:35.874Z"
+    },
+    {
+      "userId": "user-ec435949-c552-4762-a672-f14da0d657c4",
+      "animalType": "Pet / Canine",
+      "imageUrl": "/uploads/scan-1791193832818-5a4ddef58000.jpg",
+      "predictedDisease": "Normal / Healthy Canine Specimen",
+      "possibleDisease": "Normal / Healthy Canine Specimen",
+      "pathogen": "None detected",
+      "confidence": 95,
+      "confidenceLevel": "High",
+      "severity": "healthy",
+      "symptoms": [
+        "Lustrous clean coat",
+        "Moist healthy planum nasale",
+        "Bright clear eyes",
+        "No visible dermatological lesions"
+      ],
+      "visibleSymptoms": [
+        "Lustrous clean coat",
+        "Moist healthy planum nasale",
+        "Bright clear eyes",
+        "No visible dermatological lesions"
+      ],
+      "possibleCauses": [
+        "Visual assessment"
+      ],
+      "alternativePossibilities": [],
+      "recommendedCare": [
+        "Maintain balanced canine nutrition, routine core vaccinations (DHPP, Rabies), and regular monthly ectoparasite prevention.",
+        "ROUTINE — Maintain annual veterinary health check and dental wellness exams."
+      ],
+      "recommendedNextSteps": "Maintain balanced canine nutrition, routine core vaccinations (DHPP, Rabies), and regular monthly ectoparasite prevention.",
+      "quarantineProtocol": "Maintain balanced canine nutrition, routine core vaccinations (DHPP, Rabies), and regular monthly ectoparasite prevention.",
+      "urgency": "ROUTINE — Maintain annual veterinary health check and dental wellness exams.",
+      "veterinarianRecommendation": "ROUTINE — Maintain annual veterinary health check and dental wellness exams.",
+      "summary": "Specimen demonstrates intact, clean pelage without erythema, crusting, or alopecia. Muzzle and periorbital regions are normal and clear.",
+      "explanation": "Specimen demonstrates intact, clean pelage without erythema, crusting, or alopecia. Muzzle and periorbital regions are normal and clear.",
+      "id": "analysis-8e71bcc8-46fe-42ed-a194-8aabf18eba9c",
+      "createdAt": "2026-10-05T09:50:32.855Z"
+    },
+    {
+      "userId": "user-ec435949-c552-4762-a672-f14da0d657c4",
+      "animalType": "Cattle",
+      "imageUrl": "/uploads/scan-1791193803717-420e5bbd8064.jpg",
+      "predictedDisease": "Lumpy Skin Disease (LSD)",
+      "possibleDisease": "Lumpy Skin Disease (LSD)",
+      "pathogen": "Identified via visual pathology",
+      "confidence": 89,
+      "confidenceLevel": "High",
+      "severity": "high",
+      "symptoms": [
+        "Cutaneous circumscribed nodules (2-5cm)",
+        "Prescapular lymphadenopathy",
+        "Localized epidermal edema"
+      ],
+      "visibleSymptoms": [
+        "Cutaneous circumscribed nodules (2-5cm)",
+        "Prescapular lymphadenopathy",
+        "Localized epidermal edema"
+      ],
+      "possibleCauses": [
+        "Pseudo-lumpy skin disease (Bovine herpesvirus 2)",
+        "Bovine papular stomatitis",
+        "Demodicosis"
+      ],
+      "alternativePossibilities": [
+        "Pseudo-lumpy skin disease (Bovine herpesvirus 2)",
+        "Bovine papular stomatitis",
+        "Demodicosis"
+      ],
+      "recommendedCare": [
+        "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, broad-spectrum antibiotics to prevent secondary bacterial dermatitis, and apply topical antiseptics to ruptured lesions. Restrict herd movement within 5km radius.",
+        "HIGH PRIORITY — Mandatory statutory notification to district veterinary animal husbandry authorities within 12-24 hours."
+      ],
+      "recommendedNextSteps": "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, broad-spectrum antibiotics to prevent secondary bacterial dermatitis, and apply topical antiseptics to ruptured lesions. Restrict herd movement within 5km radius.",
+      "quarantineProtocol": "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, broad-spectrum antibiotics to prevent secondary bacterial dermatitis, and apply topical antiseptics to ruptured lesions. Restrict herd movement within 5km radius.",
+      "urgency": "HIGH PRIORITY — Mandatory statutory notification to district veterinary animal husbandry authorities within 12-24 hours.",
+      "veterinarianRecommendation": "HIGH PRIORITY — Mandatory statutory notification to district veterinary animal husbandry authorities within 12-24 hours.",
+      "summary": "Characteristic prominent circumscribed cutaneous nodules distributed across the neck, shoulder, and perineum. Accompanied by localized tissue edema and superficial epidermal necrosis indicative of Capripoxvirus infection.",
+      "explanation": "Characteristic prominent circumscribed cutaneous nodules distributed across the neck, shoulder, and perineum. Accompanied by localized tissue edema and superficial epidermal necrosis indicative of Capripoxvirus infection.",
+      "id": "analysis-c6d09ca6-e9a8-4950-825b-492f4e52ae20",
+      "createdAt": "2026-10-05T09:50:03.771Z"
+    },
+    {
+      "userId": "user-ec435949-c552-4762-a672-f14da0d657c4",
+      "animalType": "Cattle",
+      "imageUrl": "/uploads/scan-1791193773981-ff10e0a9b60b.jpg",
+      "predictedDisease": "Cattle Infectious Clinical Assessment",
+      "possibleDisease": "Cattle Infectious Clinical Assessment",
+      "pathogen": "Identified via visual pathology",
+      "confidence": 78,
+      "confidenceLevel": "Moderate",
+      "severity": "moderate",
+      "symptoms": [
+        "Fever / Lethargy"
+      ],
+      "visibleSymptoms": [
+        "Fever / Lethargy"
+      ],
+      "possibleCauses": [
+        "Secondary bacterial dermatitis",
+        "Nutritional deficiency dermatitis",
+        "Ectoparasitic hypersensitivity"
+      ],
+      "alternativePossibilities": [
+        "Secondary bacterial dermatitis",
+        "Nutritional deficiency dermatitis",
+        "Ectoparasitic hypersensitivity"
+      ],
+      "recommendedCare": [
+        "Isolate animal from general herd. Provide clean sheltered pen, fresh hydration, and observe for progression of cutaneous or systemic signs.",
+        "Schedule an on-site veterinary inspection within 24-48 hours for clinical palpation and targeted therapy."
+      ],
+      "recommendedNextSteps": "Isolate animal from general herd. Provide clean sheltered pen, fresh hydration, and observe for progression of cutaneous or systemic signs.",
+      "quarantineProtocol": "Isolate animal from general herd. Provide clean sheltered pen, fresh hydration, and observe for progression of cutaneous or systemic signs.",
+      "urgency": "Schedule an on-site veterinary inspection within 24-48 hours for clinical palpation and targeted therapy.",
+      "veterinarianRecommendation": "Schedule an on-site veterinary inspection within 24-48 hours for clinical palpation and targeted therapy.",
+      "summary": "Clinical evaluation based on visual characteristics and reported indications (Fever / Lethargy). Observable biomarkers indicate active localized tissue reaction requiring veterinary confirmation.",
+      "explanation": "Clinical evaluation based on visual characteristics and reported indications (Fever / Lethargy). Observable biomarkers indicate active localized tissue reaction requiring veterinary confirmation.",
+      "id": "analysis-132a4ebc-2dba-4b7b-afa9-898d78e299eb",
+      "createdAt": "2026-10-05T09:49:34.005Z"
+    },
+    {
+      "userId": "user-vet-001",
+      "animalType": "Pet / Canine",
+      "imageUrl": "/uploads/scan-1791193733387-a6a85e7cd789.jpg",
+      "predictedDisease": "Canine Demodectic / Sarcoptic Mange & Dermatitis",
+      "possibleDisease": "Canine Demodectic / Sarcoptic Mange & Dermatitis",
+      "pathogen": "Identified via visual pathology",
+      "confidence": 86,
+      "confidenceLevel": "High",
+      "severity": "moderate",
+      "symptoms": [
+        "Patchy focal alopecia (hair loss)",
+        "Erythematous crusting lesions",
+        "Epidermal scaling and lichenification"
+      ],
+      "visibleSymptoms": [
+        "Patchy focal alopecia (hair loss)",
+        "Erythematous crusting lesions",
+        "Epidermal scaling and lichenification"
+      ],
+      "possibleCauses": [
+        "Canine Atopic Dermatitis",
+        "Superficial Bacterial Pyoderma",
+        "Malassezia Dermatitis"
+      ],
+      "alternativePossibilities": [
+        "Canine Atopic Dermatitis",
+        "Superficial Bacterial Pyoderma",
+        "Malassezia Dermatitis"
+      ],
+      "recommendedCare": [
+        "Isolate from other household pets. Do not allow bedding sharing. Prepare for deep skin scraping and trichogram. Administer veterinarian-prescribed isoxazoline antiparasitic therapy and medicated chlorhexidine shampoo baths.",
+        "MODERATE URGENCY — Schedule veterinary clinic examination within 24-48 hours for definitive skin scraping microscopy."
+      ],
+      "recommendedNextSteps": "Isolate from other household pets. Do not allow bedding sharing. Prepare for deep skin scraping and trichogram. Administer veterinarian-prescribed isoxazoline antiparasitic therapy and medicated chlorhexidine shampoo baths.",
+      "quarantineProtocol": "Isolate from other household pets. Do not allow bedding sharing. Prepare for deep skin scraping and trichogram. Administer veterinarian-prescribed isoxazoline antiparasitic therapy and medicated chlorhexidine shampoo baths.",
+      "urgency": "MODERATE URGENCY — Schedule veterinary clinic examination within 24-48 hours for definitive skin scraping microscopy.",
+      "veterinarianRecommendation": "MODERATE URGENCY — Schedule veterinary clinic examination within 24-48 hours for definitive skin scraping microscopy.",
+      "summary": "Focal epidermal alopecia, erythema, and peripheral hyperkeratotic crusting. Visual patterns correlate with parasitic acariasis (Demodex canis / Sarcoptes scabiei) complicated by superficial secondary bacterial folliculitis.",
+      "explanation": "Focal epidermal alopecia, erythema, and peripheral hyperkeratotic crusting. Visual patterns correlate with parasitic acariasis (Demodex canis / Sarcoptes scabiei) complicated by superficial secondary bacterial folliculitis.",
+      "id": "analysis-afc15281-007e-4c29-b0f7-3741e5464b7a",
+      "createdAt": "2026-10-05T09:48:53.398Z"
+    },
+    {
+      "userId": "user-vet-001",
+      "animalType": "Cattle",
+      "imageUrl": "/uploads/scan-1791193733297-3fa90fe510f1.jpg",
+      "predictedDisease": "Lumpy Skin Disease (LSD)",
+      "possibleDisease": "Lumpy Skin Disease (LSD)",
+      "pathogen": "Identified via visual pathology",
+      "confidence": 89,
+      "confidenceLevel": "High",
+      "severity": "high",
+      "symptoms": [
+        "Cutaneous circumscribed nodules (2-5cm)",
+        "Prescapular lymphadenopathy",
+        "Localized epidermal edema"
+      ],
+      "visibleSymptoms": [
+        "Cutaneous circumscribed nodules (2-5cm)",
+        "Prescapular lymphadenopathy",
+        "Localized epidermal edema"
+      ],
+      "possibleCauses": [
+        "Pseudo-lumpy skin disease (Bovine herpesvirus 2)",
+        "Bovine papular stomatitis",
+        "Demodicosis"
+      ],
+      "alternativePossibilities": [
+        "Pseudo-lumpy skin disease (Bovine herpesvirus 2)",
+        "Bovine papular stomatitis",
+        "Demodicosis"
+      ],
+      "recommendedCare": [
+        "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, broad-spectrum antibiotics to prevent secondary bacterial dermatitis, and apply topical antiseptics to ruptured lesions. Restrict herd movement within 5km radius.",
+        "HIGH PRIORITY — Mandatory statutory notification to district veterinary animal husbandry authorities within 12-24 hours."
+      ],
+      "recommendedNextSteps": "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, broad-spectrum antibiotics to prevent secondary bacterial dermatitis, and apply topical antiseptics to ruptured lesions. Restrict herd movement within 5km radius.",
+      "quarantineProtocol": "Immediate quarantine in vector-proof pen. Administer antipyretic analgesics, broad-spectrum antibiotics to prevent secondary bacterial dermatitis, and apply topical antiseptics to ruptured lesions. Restrict herd movement within 5km radius.",
+      "urgency": "HIGH PRIORITY — Mandatory statutory notification to district veterinary animal husbandry authorities within 12-24 hours.",
+      "veterinarianRecommendation": "HIGH PRIORITY — Mandatory statutory notification to district veterinary animal husbandry authorities within 12-24 hours.",
+      "summary": "Characteristic prominent circumscribed cutaneous nodules distributed across the neck, shoulder, and perineum. Accompanied by localized tissue edema and superficial epidermal necrosis indicative of Capripoxvirus infection.",
+      "explanation": "Characteristic prominent circumscribed cutaneous nodules distributed across the neck, shoulder, and perineum. Accompanied by localized tissue edema and superficial epidermal necrosis indicative of Capripoxvirus infection.",
+      "id": "analysis-26a93a92-9649-402b-a4fc-691165760bce",
+      "createdAt": "2026-10-05T09:48:53.318Z"
+    },
     {
       "userId": "user-ec435949-c552-4762-a672-f14da0d657c4",
       "animalType": "Pet / Canine",
       "imageUrl": "https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=800&auto=format&fit=crop&q=80",
       "predictedDisease": "Lumpy Skin Disease (LSD)",
       "pathogen": "Capripoxvirus (Poxviridae)",
-      "confidence": 96.8,
+      "confidence": 88,
       "severity": "high",
       "symptoms": [
         "Cutaneous nodules",
@@ -64,7 +323,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=800&auto=format&fit=crop&q=80",
       "predictedDisease": "Lumpy Skin Disease (LSD)",
       "pathogen": "Capripoxvirus (Poxviridae)",
-      "confidence": 96.8,
+      "confidence": 88,
       "severity": "high",
       "symptoms": [
         "Cutaneous nodules",
@@ -94,7 +353,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1546445317-29f4545e9d53?w=800&auto=format&fit=crop&q=80",
       "predictedDisease": "Lumpy Skin Disease (LSD)",
       "pathogen": "Capripoxvirus (Poxviridae)",
-      "confidence": 96.8,
+      "confidence": 88,
       "severity": "high",
       "symptoms": [
         "Skin nodules/lumps",
@@ -122,7 +381,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?w=800&auto=format&fit=crop&q=80",
       "predictedDisease": "Normal / Healthy Specimen",
       "pathogen": "None detected",
-      "confidence": 97.4,
+      "confidence": 92,
       "severity": "healthy",
       "symptoms": [
         "Clean coat",
@@ -148,7 +407,7 @@
       "imageUrl": "https://images.unsplash.com/photo-1527153857715-3908f2ae5e81?w=800&auto=format&fit=crop&q=80",
       "predictedDisease": "Acute Clinical Mastitis",
       "pathogen": "Staphylococcus aureus",
-      "confidence": 93.6,
+      "confidence": 85,
       "severity": "high",
       "symptoms": [
         "Udder swelling",
@@ -176,6 +435,30 @@
       "userId": "user-ec435949-c552-4762-a672-f14da0d657c4",
       "createdAt": "2026-10-05T09:01:49.000Z",
       "expiresAt": "2026-11-04T09:01:49.000Z"
+    },
+    {
+      "token": "278d8af2f9cc8c755398428374cea24a3232531562732d1b957e2596de75849e",
+      "userId": "user-vet-001",
+      "createdAt": "2026-10-05T09:34:58.206Z",
+      "expiresAt": "2026-11-04T09:34:58.206Z"
+    },
+    {
+      "token": "90ec5ef0c5dd125e282ef7f4a769c6064f77b0b9ffc7bb79d0ce96efa9e6515d",
+      "userId": "user-farmer-002",
+      "createdAt": "2026-10-05T09:34:58.258Z",
+      "expiresAt": "2026-11-04T09:34:58.258Z"
+    },
+    {
+      "token": "00a882a3218b17ba65d41802696009b8d99ee92ef74fc833feef3d3ab99e6fde",
+      "userId": "user-vet-001",
+      "createdAt": "2026-10-05T09:48:52.963Z",
+      "expiresAt": "2026-11-04T09:48:52.963Z"
+    },
+    {
+      "token": "5a53971b66410c8ae71737638c1e9d1435b5587e416538fa285d0bec98081ce8",
+      "userId": "user-a39c8faa-37e3-45a1-a374-77859fdaab98",
+      "createdAt": "2026-10-06T10:23:36.571Z",
+      "expiresAt": "2026-11-05T10:23:36.571Z"
     }
   ]
 }
